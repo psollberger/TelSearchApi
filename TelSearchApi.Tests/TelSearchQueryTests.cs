@@ -1,6 +1,5 @@
 namespace TelSearchApi.Tests
 {
-  using System.Collections.Generic;
   using NUnit.Framework;
 
   [TestFixture]
@@ -12,23 +11,17 @@ namespace TelSearchApi.Tests
     }
 
     [Test]
-    public void AsDictionary_WithoutParams_ContainsDefaults()
+    public void AsDictionary_WithoutParams_IsEmpty()
     {
       var query = new TelSearchQuery();
-      Assert.That(query.AsDictionary(), Is.EquivalentTo(new Dictionary<string, string>
-      {
-        {"privat", "1"},
-        {"firma", "1"}
-      }));
+      Assert.That(query.AsDictionary(), Is.Empty);
     }
 
     [Test]
-    public void AsUri_WithoutParams_ContainsDefaults()
+    public void AsUri_WithoutParams_EqualsBaseUri()
     {
       var query = new TelSearchQuery();
-      Assert.That(query.AsUri().AbsoluteUri,
-        Is.EqualTo(
-          "https://tel.search.ch/api/?privat=1&firma=1"));
+      Assert.That(query.AsUri().AbsoluteUri, Is.EqualTo(TelSearchCore.BaseUri.AbsoluteUri));
     }
   }
 }
