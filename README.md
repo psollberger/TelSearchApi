@@ -1,4 +1,4 @@
-# TelSearchApi
+# TelSearchApi ![CI](https://github.com/psollberger/TelSearchApi/workflows/CI/badge.svg)
 An API-Wrapper for tel.search.ch Queries
 
 See: https://tel.search.ch/api/help
