@@ -7,7 +7,7 @@
   using System.Text;
   using System.Xml.Linq;
 
-  public class TelSearchResponse
+  public class TelSearchQueryResult
   {
     private readonly string _queryResult;
 
@@ -83,20 +83,18 @@
     /// <summary>
     ///   Die Fehlerinformation falls ein Fehler aufgetreten ist
     /// </summary>
-    public TelSearchException Error { get; private set; }
+    public TelSearchError Error { get; private set; }
 
     public string ResultBrowserLink { get; private set; }
     public string NextPageLink { get; private set; }
 
-    public TelSearchResponse(TelSearchQuery originalQuery, string resultResponse)
+    public TelSearchQueryResult(TelSearchQuery originalQuery, string responseContentString)
     {
       InitVars();
       OriginalQuery = originalQuery;
-      _queryResult = resultResponse;
-      ParseResponse(resultResponse);
+      _queryResult = responseContentString;
+      ParseResponse(responseContentString);
     }
-
-    #region Public Methods
 
     public string GetResultXml()
     {
@@ -104,7 +102,7 @@
       return _queryResult;
     }
 
-    public void BeginGetNextPage(Action<TelSearchResponse> callback)
+    public void BeginGetNextPage(Action<TelSearchQueryResult> callback)
     {
       if (IsLastPage)
       {
@@ -115,10 +113,10 @@
       var q = OriginalQuery.GetMemberwiseClone();
       q.StartIndex += OriginalQuery.MaxResults;
       if (q.StartIndex > 200) q.StartIndex = 200;
-      q.BeginExecute(callback);
+      //q.BeginExecute(callback);
     }
 
-    public void BeginGetPreviousPage(Action<TelSearchResponse> callback)
+    public void BeginGetPreviousPage(Action<TelSearchQueryResult> callback)
     {
       if (CurrentPage == 1)
       {
@@ -129,10 +127,10 @@
       var q = OriginalQuery.GetMemberwiseClone();
       q.StartIndex -= OriginalQuery.MaxResults + Entries.Count;
       if (q.StartIndex > 200) q.StartIndex = 200;
-      q.BeginExecute(callback);
+      //q.BeginExecute(callback);
     }
 
-    public void BeginGetPage(int page, Action<TelSearchResponse> callback)
+    public void BeginGetPage(int page, Action<TelSearchQueryResult> callback)
     {
       if (page < 1 || page > TotalPages)
       {
@@ -143,12 +141,8 @@
       var q = OriginalQuery.GetMemberwiseClone();
       q.StartIndex = page * OriginalQuery.MaxResults - 1;
       if (q.StartIndex > 200) q.StartIndex = 200;
-      q.BeginExecute(callback);
+      //q.BeginExecute(callback);
     }
-
-    #endregion Public Methods
-
-    #region Private Methods
 
     private void InitVars()
     {
@@ -220,7 +214,5 @@
         // ignore
       }
     }
-
-    #endregion Private Methods
   }
 }

@@ -60,20 +60,6 @@
     /// </summary>
     public bool CountOnly { get; set; }
 
-    /// <summary>
-    ///   Führt das Query aus und setzt die QueryResult Eigenschaft
-    /// </summary>
-    /// <exception cref="NotSupportedException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="System.Security.SecurityException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    public void BeginExecute(Action<TelSearchResponse> callback)
-    {
-      //var source = new TelSearchWebDataSource();
-      //source.BeginExecute(this, callback);
-    }
-
     public TelSearchQuery GetMemberwiseClone()
     {
       return (TelSearchQuery)MemberwiseClone();
@@ -92,8 +78,11 @@
       if (!string.IsNullOrEmpty(Query))
         argsList.Add("q", Query);
 
-      argsList.Add("privat", IncludePrivates ? "1" : "0");
-      argsList.Add("firma", IncludeOrganizations ? "1" : "0");
+      if (!IncludePrivates)
+        argsList.Add("privat", "0");
+
+      if (!IncludeOrganizations)
+        argsList.Add("firma", "0");
 
       if (StartIndex > 0)
         argsList.Add("pos", StartIndex.ToString());

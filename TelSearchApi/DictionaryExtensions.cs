@@ -8,6 +8,7 @@
   {
     public static string AsUriQuery(this IDictionary<string, string> dictionary)
     {
+      if (dictionary.Count == 0) return null;
       var queryString = new StringBuilder();
       foreach (var arg in dictionary) queryString.Append(arg.Key + "=" + Uri.EscapeDataString(arg.Value) + "&");
       queryString.Remove(queryString.Length - 1, 1);
