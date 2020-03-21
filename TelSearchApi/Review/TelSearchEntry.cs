@@ -117,7 +117,7 @@
     ///   Rubrik bei Firmeneinträgen (mehrere Elemente möglich)
     /// </summary>
     /// <remarks>/feed/entry/tel:category</remarks>
-    public IList<string> Category { get; private set; }
+    public IReadOnlyList<string> Category { get; private set; } = new List<string>();
 
     /// <summary>
     ///   Strassenbezeichnung
@@ -225,7 +225,7 @@
     ///   Alle Extra Felder die nicht speziell behandelt werden.
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='...'</remarks>
-    public IDictionary<string, string> ExtraFields { get; private set; }
+    public IReadOnlyDictionary<string, string> ExtraFields { get; private set; } = new Dictionary<string, string>();
 
     public static TelSearchEntry CreateFromElement(XElement entry)
     {
@@ -309,7 +309,7 @@
             result.Occupation = elem.Value;
             break;
           case "category":
-            result.Category.Add(elem.Value);
+            ((List<string>)result.Category).Add(elem.Value);
             break;
           case "street":
             result.Street = elem.Value;
@@ -370,7 +370,7 @@
                 result.Yahoo = extValue;
                 break;
               default:
-                result.ExtraFields[extType] = extValue;
+                ((Dictionary<string, string>)result.ExtraFields)[extType] = extValue;
                 break;
             }
 

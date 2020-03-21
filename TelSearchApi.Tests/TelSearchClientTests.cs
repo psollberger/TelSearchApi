@@ -8,7 +8,7 @@
     [Test]
     public void ExecuteQueryAsync_WhenCalledWithNullQuery_ThrowsArgumentNullException()
     {
-      var client = new TelSearchClient();
+      var client = new TelSearchClient(null);
       Assert.That(async () => { await client.ExecuteQueryAsync(null); }, Throws.ArgumentNullException);
     }
   }

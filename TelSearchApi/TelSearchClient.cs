@@ -6,6 +6,13 @@
 
   public class TelSearchClient
   {
+    public string ApiKey { get; }
+
+    public TelSearchClient(string apiKey)
+    {
+      ApiKey = apiKey;
+    }
+
     /// <summary>
     ///   Executes the query and returns the api response
     /// </summary>
@@ -14,7 +21,7 @@
       if (query == null) throw new ArgumentNullException(nameof(query));
       using (var client = new HttpClient())
       {
-        var response = await client.GetAsync(query.AsUri());
+        var response = await client.GetAsync(query.GetRequestUri());
 
         if (response.IsSuccessStatusCode)
           return new TelSearchQueryResponse(new TelSearchQueryResult(query,

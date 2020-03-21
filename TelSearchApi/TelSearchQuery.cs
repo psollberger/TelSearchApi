@@ -2,6 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Threading.Tasks;
 
   /// <summary>
   ///   Proxy für die freie API von tel.search.ch
@@ -9,6 +10,8 @@
   /// <example>https://tel.search.ch/api/help</example>
   public class TelSearchQuery
   {
+    private readonly TelSearchClient _client;
+
     /// <summary>
     ///   General search term. Searches in name, category or phone number
     /// </summary>
@@ -60,12 +63,30 @@
     /// </summary>
     public bool CountOnly { get; set; }
 
-    public TelSearchQuery GetMemberwiseClone()
+    public TelSearchQuery(TelSearchClient client)
     {
-      return (TelSearchQuery)MemberwiseClone();
+      _client = client;
     }
 
-    public IDictionary<string, string> AsDictionary()
+    public Task<TelSearchQueryResponse> ExecuteAsync()
+    {
+      return _client.ExecuteQueryAsync(this);
+    }
+
+    public Uri GetRequestUri()
+    {
+      return new UriBuilder(TelSearchCore.BaseUri)
+      {
+        Query = AsDictionary().AsUriQuery()
+      }.Uri;
+    }
+
+    public TelSearchQuery GetMemberwiseClone()
+    {
+      return (TelSearchQuery) MemberwiseClone();
+    }
+
+    internal IDictionary<string, string> AsDictionary()
     {
       var argsList = new Dictionary<string, string>(10);
 
@@ -90,8 +111,8 @@
       if (MaxResults > 0)
         argsList.Add("maxnum", MaxResults.ToString());
 
-      if (!string.IsNullOrEmpty(TelSearchCore.ApiKey))
-        argsList.Add("key", TelSearchCore.ApiKey);
+      if (!string.IsNullOrEmpty(_client?.ApiKey))
+        argsList.Add("key", _client?.ApiKey);
 
       if (!string.IsNullOrEmpty(Language))
         argsList.Add("lang", Language);
@@ -100,14 +121,6 @@
         argsList.Add("count_only", "1");
 
       return argsList;
-    }
-
-    public Uri AsUri()
-    {
-      return new UriBuilder(TelSearchCore.BaseUri)
-      {
-        Query = AsDictionary().AsUriQuery()
-      }.Uri;
     }
   }
 }
