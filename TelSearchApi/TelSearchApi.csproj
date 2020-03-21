@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>ch.gargo.TelSearchApi</PackageId>
+    <Authors>Patrick Sollberger</Authors>
+    <Company>Patrick Sollberger</Company>
+    <Description>A tel.search.ch api client library</Description>
+    <Copyright />
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/psollberger/TelSearchApi</RepositoryUrl>
+    <PackageTags>API tel.search.ch .Net</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+    <Version>3.0.0</Version>
+  </PropertyGroup>
+
+</Project>
