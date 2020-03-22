@@ -29,4 +29,4 @@ jobs:
       run: dotnet pack --configuration Release
 
     - name: Publish nuget package
-      run: dotnet nuget push .\TelSearchApi\bin\Release\TelSearchApi.3.0.0.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push .\TelSearchApi\bin\Release\TelSearchApi.3.0.0.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
