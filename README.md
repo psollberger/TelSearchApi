@@ -3,6 +3,8 @@ An API-Wrapper for tel.search.ch Queries
 
 See: https://tel.search.ch/api/help
 
+Available on NuGet: https://www.nuget.org/packages/TelSearchApi/
+
 # Example
 
 ```csharp
