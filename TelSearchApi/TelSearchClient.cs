@@ -4,7 +4,7 @@
   using System.Net.Http;
   using System.Threading.Tasks;
 
-  public class TelSearchClient
+  public class TelSearchClient : ITelSearchClient
   {
     public string ApiKey { get; }
 

@@ -10,7 +10,7 @@
   /// <example>https://tel.search.ch/api/help</example>
   public class TelSearchQuery
   {
-    private readonly TelSearchClient _client;
+    private readonly ITelSearchClient _client;
 
     /// <summary>
     ///   General search term. Searches in name, category or phone number
@@ -63,7 +63,7 @@
     /// </summary>
     public bool CountOnly { get; set; }
 
-    public TelSearchQuery(TelSearchClient client)
+    public TelSearchQuery(ITelSearchClient client)
     {
       _client = client;
     }
