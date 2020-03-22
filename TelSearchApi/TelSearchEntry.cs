@@ -12,7 +12,7 @@
   public class TelSearchEntry
   {
     /// <summary>
-    ///   Unique identificator according to RFC 4287
+    ///   Unique identification according to RFC 4287
     /// </summary>
     /// <remarks>/feed/entry/id</remarks>
     public string Id { get; private set; }

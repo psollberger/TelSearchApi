@@ -6,10 +6,13 @@ See: https://tel.search.ch/api/help
 # Example
 
 ```csharp
-TelSearchCore.ApiKey = "<your API Key goes here";
-TelSearchQuery q = new TelSearchQuery
+var client = new TelSearchClient("<api key, empty string or null>");
+var query = new TelSearchQuery(client)
 {
-    What = "<your search term goes here>";
-}
-var result = await q.ExecuteAsync();
+    Query = "<general search term>",
+    Language = "de"
+};
+var response = await query.ExecuteAsync();
+//Or if it's not possible to use await
+//var response = query.ExecuteAsync().GetAwaiter().GetResult();
 ```
