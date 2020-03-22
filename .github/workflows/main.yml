@@ -28,7 +28,7 @@ jobs:
     - name: Run Tests
       run: dotnet test
 
-    - name: Publish nuget packages
+    - name: Publish nuget package
       uses: rohith/publish-nuget@v2.2.0
       with:
         PROJECT_FILE_PATH: TelSearchApi\TelSearchApi.csproj
