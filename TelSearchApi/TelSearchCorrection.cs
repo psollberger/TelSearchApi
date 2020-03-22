@@ -9,10 +9,11 @@
 
     public static TelSearchCorrection CreateFromElement(XElement element)
     {
-      var result = new TelSearchCorrection();
-      result.SearchTerms = element.Attribute("searchTerms")?.Value;
-      result.TotalResults = int.Parse(element.Attribute("totalResults")?.Value ?? "0");
-      return result;
+      return new TelSearchCorrection
+      {
+        SearchTerms = element.Attribute("searchTerms")?.Value,
+        TotalResults = int.Parse(element.Attribute("totalResults")?.Value ?? "0")
+      };
     }
   }
 }
