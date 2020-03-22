@@ -64,6 +64,8 @@
 
     public string ResultLink { get; }
 
+    public string SelfLink { get; }
+
     public TelSearchQueryResult(TelSearchQuery query, string queryResultXml)
     {
       Query = query;
@@ -73,29 +75,17 @@
 
       XNamespace ns = "http://www.w3.org/2005/Atom";
       XNamespace nsOpenSearch = "http://a9.com/-/spec/opensearchrss/1.0/";
-      //XNamespace nsTel = "http://tel.search.ch/api/spec/result/1.0/";
 
       var feed = doc.Element(ns + "feed");
-      if (feed == null) throw new ArgumentNullException(nameof(feed));
+      if (feed == null) throw new FeedNotFoundException();
 
-      var totalResultsValue = feed.Element(nsOpenSearch + "totalResults")?.Value;
-      if (!string.IsNullOrEmpty(totalResultsValue))
-        if (int.TryParse(totalResultsValue, out var tmp))
-          TotalResults = tmp;
-
-      var startIndexValue = feed.Element(nsOpenSearch + "startIndex")?.Value;
-      if (!string.IsNullOrEmpty(startIndexValue))
-        if (int.TryParse(startIndexValue, out var tmp))
-          StartIndex = tmp;
-
-      var itemsPerPageValue = feed.Element(nsOpenSearch + "itemsPerPage")?.Value;
-      if (!string.IsNullOrEmpty(itemsPerPageValue))
-        if (int.TryParse(itemsPerPageValue, out var tmp))
-          ItemsPerPage = tmp;
+      TotalResults = feed.GetInteger(nsOpenSearch + "totalResults");
+      StartIndex = feed.GetInteger(nsOpenSearch + "startIndex");
+      ItemsPerPage = feed.GetInteger(nsOpenSearch + "itemsPerPage");
 
       var links = feed.Elements(ns + "link").ToArray();
-      ResultLink = links.FirstOrDefault(l => l.Attribute("rel")?.Value.Equals("alternate") ?? false)
-        ?.Attribute("href")?.Value;
+      ResultLink = links.GetLinkHref("alternate");
+      SelfLink = links.GetLinkHref("self");
 
       var xCorrections = feed.Elements(nsOpenSearch + "Query")
         .Where(e => e.Attribute("role")?.Value.Equals("correction") ?? false).ToArray();
@@ -103,7 +93,7 @@
         Corrections = new List<TelSearchCorrection>(xCorrections.Select(TelSearchCorrection.CreateFromElement));
 
       var xEntries = feed.Elements(ns + "entry").ToArray();
-      if (xEntries.Length > 0) Entries = new List<TelSearchEntry>(xEntries.Select(TelSearchEntry.CreateFromElement));
+      if (xEntries.Length > 0) Entries = new List<TelSearchEntry>(xEntries.Select(e => new TelSearchEntry(e)));
     }
 
     public TelSearchQuery GetPreviousPageQuery()

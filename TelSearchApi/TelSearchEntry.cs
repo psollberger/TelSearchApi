@@ -3,6 +3,7 @@
   using System;
   using System.Collections.Generic;
   using System.Diagnostics;
+  using System.Linq;
   using System.Xml.Linq;
 
   /// <summary>
@@ -15,369 +16,312 @@
     ///   Unique identification according to RFC 4287
     /// </summary>
     /// <remarks>/feed/entry/id</remarks>
-    public string Id { get; private set; }
+    public string Id { get; }
 
     /// <summary>
     ///   Publishing date
     /// </summary>
     /// <remarks>/feed/entry/published</remarks>
-    public DateTime? Published { get; private set; }
+    public DateTime? Published { get; }
 
     /// <summary>
     ///   Date of last change
     /// </summary>
     /// <remarks>/feed/entry/updated</remarks>
-    public DateTime? Updated { get; private set; }
+    public DateTime? Updated { get; }
 
     /// <summary>
     ///   Title of the entry (Name of the person or organization)
     /// </summary>
     /// <remarks>/feed/entry/title</remarks>
-    public string Title { get; private set; }
+    public string Title { get; }
 
     /// <summary>
     ///   Aggregation of the entry in plaintext
     /// </summary>
     /// <remarks>/feed/entry/content</remarks>
-    public string Content { get; private set; }
+    public string Content { get; }
 
     /// <summary>
     ///   Author of the entry according to RFC 4287
     /// </summary>
     /// <remarks>/feed/entry/author/name</remarks>
-    public string AuthorName { get; private set; }
+    public string AuthorName { get; }
 
     /// <summary>
     ///   Link to the detail page of the entry on tel.search.ch
     /// </summary>
     /// <remarks>/feed/entry/link/@rel='alternate'</remarks>
-    public string DetailsUrl { get; private set; }
+    public string DetailsUrl { get; }
 
     /// <summary>
     ///   Link to the correction page of the entry on tel.search.ch
     /// </summary>
     /// <remarks>/feed/entry/link/@rel='edit'</remarks>
-    public string EditUrl { get; private set; }
+    public string EditUrl { get; }
 
     /// <summary>
     ///   Link to the VCard file for the entry
     /// </summary>
     /// <remarks>/feed/entry/link/@type='text/x-vcard'</remarks>
-    public string VCardUrl { get; private set; }
+    public string VCardUrl { get; }
 
     /// <summary>
     ///   Position of the entry in the entire result set
     /// </summary>
     /// <remarks>/feed/entry/tel:pos</remarks>
-    public int ResultPosition { get; private set; }
+    public int Position { get; }
 
     /// <summary>
     ///   Unique tel.search.ch identification
     /// </summary>
     /// <remarks>/feed/entry/tel:id</remarks>
-    public string TelSearchId { get; private set; }
+    public string TelSearchId { get; }
 
     /// <summary>
     ///   Type of the entry: person or organization
     /// </summary>
     /// <remarks>/feed/entry/tel:type</remarks>
-    public TelSearchAddressType AddressType { get; private set; } = TelSearchAddressType.Unknown;
+    public TelSearchEntryType Type { get; } = TelSearchEntryType.Unknown;
+
+    /// <summary>
+    ///   Organizationname
+    /// </summary>
+    /// <remarks>/feed/entry/tel:org</remarks>
+    public string Organizationname { get; }
 
     /// <summary>
     ///   Lastname of the person or name of the organization
     /// </summary>
     /// <remarks>/feed/entry/tel:name</remarks>
-    public string LastName { get; private set; }
+    public string LastName { get; }
 
     /// <summary>
     ///   Firstname of the person
     /// </summary>
     /// <remarks>/feed/entry/tel:firstname</remarks>
-    public string FirstName { get; private set; }
+    public string FirstName { get; }
 
     /// <summary>
     ///   Additional name of the person or organization
     /// </summary>
     /// <remarks>/feed/entry/tel:subname</remarks>
-    public string AdditionalName { get; private set; }
+    public string AdditionalName { get; }
 
     /// <summary>
     ///   The maiden name of the person
     /// </summary>
     /// <remarks>/feed/entry/tel:maidenname</remarks>
-    public string MaidenName { get; private set; }
+    public string MaidenName { get; }
 
     /// <summary>
     ///   Profession of the person or an additional description of the organization
     /// </summary>
     /// <remarks>/feed/entry/tel:occupation</remarks>
-    public string Occupation { get; private set; }
+    public string Occupation { get; }
 
     /// <summary>
     ///   Zero, one or more categories the entry belongs to
     /// </summary>
     /// <remarks>/feed/entry/tel:category</remarks>
-    public IReadOnlyList<string> Categories { get; } = new List<string>();
+    public IReadOnlyList<string> Categories { get; }
 
     /// <summary>
     ///   The name of the street
     /// </summary>
     /// <remarks>/feed/entry/tel:street</remarks>
-    public string StreetName { get; private set; }
+    public string StreetName { get; }
 
     /// <summary>
     ///   The building number
     /// </summary>
     /// <remarks>/feed/entry/tel:streetno</remarks>
-    public string StreetNumber { get; private set; }
+    public string StreetNumber { get; }
 
     /// <summary>
     ///   The post office box number
     /// </summary>
     /// <remarks>/feed/entry/tel:pobox</remarks>
-    public string PostOfficeBox { get; private set; }
+    public string PostOfficeBox { get; }
 
     /// <summary>
     ///   The zip code
     /// </summary>
     /// <remarks>/feed/entry/tel:zip</remarks>
-    public string PostalCode { get; private set; }
+    public string PostalCode { get; }
 
     /// <summary>
     ///   The city name
     /// </summary>
     /// <remarks>/feed/entry/tel:city</remarks>
-    public string City { get; private set; }
+    public string City { get; }
 
     /// <summary>
     ///   The abbreviation of the canton (ZH,BE,AG,TG,SG,...)
     /// </summary>
     /// <remarks>/feed/entry/tel:canton</remarks>
-    public string CantonAbbreviation { get; private set; }
+    public string Canton { get; }
+
+    /// <summary>
+    ///   The abbreviation of the country
+    /// </summary>
+    public string Country { get; }
 
     /// <summary>
     ///   Defines if the person/organization does not wish to receive advertisement
     /// </summary>
     /// <remarks>/feed/entry/tel:nopromo</remarks>
-    public bool NoPromotion { get; private set; }
+    public bool NoPromotion { get; }
 
     /// <summary>
     ///   The phone number in international format
     /// </summary>
     /// <remarks>/feed/entry/tel:phone</remarks>
-    public string Phone { get; private set; }
+    public string Phone { get; }
 
     /// <summary>
-    ///   The fax number
+    ///   The first provided fax number
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='fax'</remarks>
-    public string Fax { get; private set; }
+    public string Fax { get; }
 
     /// <summary>
-    ///   The cell phone number
+    ///   The first provided cell phone number
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='mobile'</remarks>
-    public string Mobile { get; private set; }
+    public string Mobile { get; }
 
     /// <summary>
-    ///   The email address
+    ///   The first provided email address
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='email'</remarks>
-    public string EMail { get; private set; }
+    public string EMail { get; }
 
     /// <summary>
-    ///   The website URL
+    ///   The first provided website URL
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='website'</remarks>
-    public string Website { get; private set; }
+    public string Website { get; }
 
     /// <summary>
-    ///   Skype name
+    ///   The first provided Skype name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='skype'</remarks>
-    public string Skype { get; private set; }
+    public string Skype { get; }
 
     /// <summary>
-    ///   ICQ Instant-Messenger-Name
+    ///   The first provided ICQ Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='icq'</remarks>
-    public string Icq { get; private set; }
+    public string Icq { get; }
 
     /// <summary>
-    ///   MSN Instant-Messenger-Name
+    ///   The first provided MSN Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='msn'</remarks>
-    public string Msn { get; private set; }
+    public string Msn { get; }
 
     /// <summary>
-    ///   AIM Instant-Messenger-Name
+    ///   The first provided AIM Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='aim'</remarks>
-    public string Aim { get; private set; }
+    public string Aim { get; }
 
     /// <summary>
-    ///   Yahoo Instant-Messenger-Name
+    ///   The first provided Yahoo Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='yahoo'</remarks>
-    public string Yahoo { get; private set; }
+    public string Yahoo { get; }
 
     /// <summary>
-    ///   All additional extra fields that are not listed in their own properties
+    ///   All extra values
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='...'</remarks>
-    public IReadOnlyDictionary<string, string> ExtraFields { get; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, IReadOnlyList<string>> ExtraFields { get; }
 
-    public static TelSearchEntry CreateFromElement(XElement entry)
+    public TelSearchEntry(XContainer entry)
     {
-      var result = new TelSearchEntry();
+      XNamespace ns = "http://www.w3.org/2005/Atom";
+      XNamespace nsTel = "http://tel.search.ch/api/spec/result/1.0/";
 
-      foreach (var elem in entry.Elements())
-        switch (elem.Name.LocalName)
+      Id = entry.GetString(ns + "id");
+      Published = entry.GetDateTime(ns + "published");
+      Updated = entry.GetDateTime(ns + "updated");
+      Title = entry.GetString(ns + "title");
+      Content = entry.GetString(ns + "content");
+      AuthorName = entry.Element(ns + "author")?.GetString(ns + "name");
+
+      var links = entry.Elements(ns + "link").ToArray();
+      DetailsUrl = links.GetLinkHref("alternate", "text/html");
+      VCardUrl = links.GetLinkHref("alternate", "text/x-vcard");
+      EditUrl = links.GetLinkHref("edit");
+
+      Position = entry.GetInteger(nsTel + "pos");
+      TelSearchId = entry.GetString(nsTel + "id");
+
+      var typeValue = entry.GetString(nsTel + "type");
+      if (typeValue != null)
+      {
+        if (string.Equals(typeValue, "Person", StringComparison.CurrentCultureIgnoreCase))
+          Type = TelSearchEntryType.Person;
+        else if (string.Equals(typeValue, "Organisation", StringComparison.CurrentCultureIgnoreCase))
+          Type = TelSearchEntryType.Organization;
+      }
+
+      Organizationname = entry.GetString(nsTel + "org");
+      LastName = entry.GetString(nsTel + "name");
+      FirstName = entry.GetString(nsTel + "firstname");
+      AdditionalName = entry.GetString(nsTel + "subname");
+      MaidenName = entry.GetString(nsTel + "maidenname");
+      Occupation = entry.GetString(nsTel + "occupation");
+      StreetName = entry.GetString(nsTel + "street");
+      StreetNumber = entry.GetString(nsTel + "streetno");
+      PostOfficeBox = entry.GetString(nsTel + "pobox");
+      PostalCode = entry.GetString(nsTel + "zip");
+      City = entry.GetString(nsTel + "city");
+      Canton = entry.GetString(nsTel + "canton");
+      Country = entry.GetString(nsTel + "country");
+      NoPromotion = entry.GetString(nsTel + "nopromo")?.Equals("*") ?? false;
+      Phone = entry.GetString(nsTel + "phone");
+
+      var categories = entry.Elements(nsTel + "category").ToArray();
+      if (categories.Length > 0)
+      {
+        Categories = new List<string>(categories.Length);
+        foreach (var category in categories) ((List<string>) Categories).Add(category.Value);
+      }
+
+      var extras = entry.Elements(nsTel + "extra").ToArray();
+      if (extras.Length > 0)
+      {
+        ExtraFields = new Dictionary<string, IReadOnlyList<string>>();
+
+        foreach (var extra in extras)
         {
-          case "id":
-            if (elem.Name.Namespace.NamespaceName.EndsWith("Atom"))
-              result.Id = elem.Value;
-            else if (elem.Name.Namespace.NamespaceName.Contains("tel.search.ch")) result.TelSearchId = elem.Value;
-            break;
-          case "published":
+          var extraType = extra.Attribute("type")?.Value.ToLower();
+          if (string.IsNullOrEmpty(extraType)) continue;
+          var extraValue = extra.Value;
+          if (string.IsNullOrEmpty(extraValue)) continue;
+
+          if (!ExtraFields.TryGetValue(extraType, out var extraList))
           {
-            if (DateTime.TryParse(elem.Value, out var pub))
-              result.Published = pub;
+            extraList = new List<string>();
+            ((Dictionary<string, IReadOnlyList<string>>) ExtraFields).Add(extraType, extraList);
           }
-            break;
-          case "updated":
-            if (DateTime.TryParse(elem.Value, out var upd))
-              result.Updated = upd;
-            break;
-          case "title":
-            result.Title = elem.Value;
-            break;
-          case "content":
-            result.Content = elem.Value;
-            break;
-          case "author":
-            result.AuthorName = elem.Element("{http://www.w3.org/2005/Atom}name")?.Value;
-            break;
-          case "link":
-            var linkType = elem.Attribute("type")?.Value;
-            if (linkType == "text/x-vcard")
-            {
-              result.VCardUrl = elem.Attribute("href")?.Value;
-            }
-            else
-            {
-              var linkRel = elem.Attribute("rel")?.Value;
-              switch (linkRel)
-              {
-                case "alternate":
-                  result.DetailsUrl = elem.Attribute("href")?.Value;
-                  break;
-                case "edit":
-                  result.EditUrl = elem.Attribute("href")?.Value;
-                  break;
-              }
-            }
 
-            break;
-          case "pos":
-            if (int.TryParse(elem.Value, out var rpn))
-              result.ResultPosition = rpn;
-            break;
-          case "type":
-            var adrTyp = elem.Value;
-            if (string.Equals(adrTyp, "Person", StringComparison.CurrentCultureIgnoreCase))
-              result.AddressType = TelSearchAddressType.Person;
-            else if (string.Equals(adrTyp, "Organisation", StringComparison.CurrentCultureIgnoreCase))
-              result.AddressType = TelSearchAddressType.Organization;
-            break;
-          //case "org":
-          //  result.OrganisationName = elem.Value;
-          //  break;
-          case "name":
-            result.LastName = elem.Value;
-            break;
-          case "firstname":
-            result.FirstName = elem.Value;
-            break;
-          case "subname":
-            result.AdditionalName = elem.Value;
-            break;
-          case "maidenname":
-            result.MaidenName = elem.Value;
-            break;
-          case "occupation":
-            result.Occupation = elem.Value;
-            break;
-          case "category":
-            ((List<string>) result.Categories).Add(elem.Value);
-            break;
-          case "street":
-            result.StreetName = elem.Value;
-            break;
-          case "streetno":
-            result.StreetNumber = elem.Value;
-            break;
-          case "pobox":
-            result.PostOfficeBox = elem.Value;
-            break;
-          case "zip":
-            result.PostalCode = elem.Value;
-            break;
-          case "city":
-            result.City = elem.Value;
-            break;
-          case "canton":
-            result.CantonAbbreviation = elem.Value;
-            break;
-          case "nopromo":
-            result.NoPromotion = elem.Value == "*";
-            break;
-          case "phone":
-            result.Phone = elem.Value;
-            break;
-          case "extra":
-            var extType = elem.Attribute("type")?.Value.ToLower();
-            if (extType == null) continue;
-            var extValue = elem.Value;
-
-            switch (extType)
-            {
-              case "mobile":
-                result.Mobile = extValue;
-                break;
-              case "fax":
-                result.Fax = extValue;
-                break;
-              case "email":
-                result.EMail = extValue;
-                break;
-              case "website":
-                result.Website = extValue;
-                break;
-              case "skype":
-                result.Skype = extValue;
-                break;
-              case "icq":
-                result.Icq = extValue;
-                break;
-              case "msn":
-                result.Msn = extValue;
-                break;
-              case "aim":
-                result.Aim = extValue;
-                break;
-              case "yahoo":
-                result.Yahoo = extValue;
-                break;
-              default:
-                ((Dictionary<string, string>) result.ExtraFields)[extType] = extValue;
-                break;
-            }
-
-            break;
+          ((List<string>) extraList).Add(extraValue);
         }
 
-      return result;
+        if (ExtraFields.TryGetValue("fax", out _)) Fax = ExtraFields["fax"][0];
+        if (ExtraFields.TryGetValue("mobile", out _)) Mobile = ExtraFields["mobile"][0];
+        if (ExtraFields.TryGetValue("email", out _)) EMail = ExtraFields["email"][0];
+        if (ExtraFields.TryGetValue("website", out _)) Website = ExtraFields["website"][0];
+        if (ExtraFields.TryGetValue("skype", out _)) Skype = ExtraFields["skype"][0];
+        if (ExtraFields.TryGetValue("icq", out _)) Icq = ExtraFields["icq"][0];
+        if (ExtraFields.TryGetValue("msn", out _)) Msn = ExtraFields["msn"][0];
+        if (ExtraFields.TryGetValue("aim", out _)) Aim = ExtraFields["aim"][0];
+        if (ExtraFields.TryGetValue("yahoo", out _)) Yahoo = ExtraFields["yahoo"][0];
+      }
     }
   }
 }

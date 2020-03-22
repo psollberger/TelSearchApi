@@ -1,6 +1,6 @@
 ﻿namespace TelSearchApi
 {
-  public enum TelSearchAddressType
+  public enum TelSearchEntryType
   {
     Unknown,
     Person,
