@@ -12,220 +12,220 @@
   public class TelSearchEntry
   {
     /// <summary>
-    ///   Eindeutiger Identifikator gemäss RFC 4287
+    ///   Unique identificator according to RFC 4287
     /// </summary>
     /// <remarks>/feed/entry/id</remarks>
     public string Id { get; private set; }
 
     /// <summary>
-    ///   Publikationsdatum
+    ///   Publishing date
     /// </summary>
     /// <remarks>/feed/entry/published</remarks>
     public DateTime? Published { get; private set; }
 
     /// <summary>
-    ///   Letze Änderung des Eintrags
+    ///   Date of last change
     /// </summary>
     /// <remarks>/feed/entry/updated</remarks>
     public DateTime? Updated { get; private set; }
 
     /// <summary>
-    ///   Titel des Eintrags (Name der Person oder Organisation)
+    ///   Title of the entry (Name of the person or organization)
     /// </summary>
     /// <remarks>/feed/entry/title</remarks>
     public string Title { get; private set; }
 
     /// <summary>
-    ///   Zusammenfassung des Eintrags in Plaintext
+    ///   Aggregation of the entry in plaintext
     /// </summary>
     /// <remarks>/feed/entry/content</remarks>
     public string Content { get; private set; }
 
     /// <summary>
-    ///   Autor des Eintrags (gem. RFC 4287)
+    ///   Author of the entry according to RFC 4287
     /// </summary>
     /// <remarks>/feed/entry/author/name</remarks>
     public string AuthorName { get; private set; }
 
     /// <summary>
-    ///   Link zur Detailseite des Eintrags auf tel.search.ch
+    ///   Link to the detail page of the entry on tel.search.ch
     /// </summary>
     /// <remarks>/feed/entry/link/@rel='alternate'</remarks>
     public string DetailsUrl { get; private set; }
 
     /// <summary>
-    ///   Link zur Korrekturseite des Eintrags auf tel.search.ch
+    ///   Link to the correction page of the entry on tel.search.ch
     /// </summary>
     /// <remarks>/feed/entry/link/@rel='edit'</remarks>
     public string EditUrl { get; private set; }
 
     /// <summary>
-    ///   URL für den Download als VCard
+    ///   Link to the VCard file for the entry
     /// </summary>
     /// <remarks>/feed/entry/link/@type='text/x-vcard'</remarks>
     public string VCardUrl { get; private set; }
 
     /// <summary>
-    ///   Position des Eintrags im gesamten Resultateset
+    ///   Position of the entry in the entire result set
     /// </summary>
     /// <remarks>/feed/entry/tel:pos</remarks>
     public int ResultPosition { get; private set; }
 
     /// <summary>
-    ///   Eindeutige tel.search.ch-ID des Eintrags
+    ///   Unique tel.search.ch identification
     /// </summary>
     /// <remarks>/feed/entry/tel:id</remarks>
     public string TelSearchId { get; private set; }
 
     /// <summary>
-    ///   Art des Eintrags: Person oder Organisation
+    ///   Type of the entry: person or organization
     /// </summary>
     /// <remarks>/feed/entry/tel:type</remarks>
     public TelSearchAddressType AddressType { get; private set; } = TelSearchAddressType.Unknown;
 
     /// <summary>
-    ///   Nachname der Person resp. Name der Firma/Organisation
+    ///   Lastname of the person or name of the organization
     /// </summary>
     /// <remarks>/feed/entry/tel:name</remarks>
     public string LastName { get; private set; }
 
     /// <summary>
-    ///   Vorname der Person
+    ///   Firstname of the person
     /// </summary>
     /// <remarks>/feed/entry/tel:firstname</remarks>
     public string FirstName { get; private set; }
 
     /// <summary>
-    ///   Namenszusatz
+    ///   Additional name of the person or organization
     /// </summary>
     /// <remarks>/feed/entry/tel:subname</remarks>
     public string AdditionalName { get; private set; }
 
     /// <summary>
-    ///   Mädchenname der Person
+    ///   The maiden name of the person
     /// </summary>
     /// <remarks>/feed/entry/tel:maidenname</remarks>
     public string MaidenName { get; private set; }
 
     /// <summary>
-    ///   Beruf der Person, Zusatzbezeichnung bei Firmeneinträgen
+    ///   Profession of the person or an additional description of the organization
     /// </summary>
     /// <remarks>/feed/entry/tel:occupation</remarks>
     public string Occupation { get; private set; }
 
     /// <summary>
-    ///   Rubrik bei Firmeneinträgen (mehrere Elemente möglich)
+    ///   Zero, one or more categories the entry belongs to
     /// </summary>
     /// <remarks>/feed/entry/tel:category</remarks>
-    public IReadOnlyList<string> Category { get; private set; } = new List<string>();
+    public IReadOnlyList<string> Categories { get; } = new List<string>();
 
     /// <summary>
-    ///   Strassenbezeichnung
+    ///   The name of the street
     /// </summary>
     /// <remarks>/feed/entry/tel:street</remarks>
-    public string Street { get; private set; }
+    public string StreetName { get; private set; }
 
     /// <summary>
-    ///   Hausnummer
+    ///   The building number
     /// </summary>
     /// <remarks>/feed/entry/tel:streetno</remarks>
     public string StreetNumber { get; private set; }
 
     /// <summary>
-    ///   Postfach
+    ///   The post office box number
     /// </summary>
     /// <remarks>/feed/entry/tel:pobox</remarks>
     public string PostOfficeBox { get; private set; }
 
     /// <summary>
-    ///   Postleitzahl
+    ///   The zip code
     /// </summary>
     /// <remarks>/feed/entry/tel:zip</remarks>
     public string PostalCode { get; private set; }
 
     /// <summary>
-    ///   Ortsbezeichnung
+    ///   The city name
     /// </summary>
     /// <remarks>/feed/entry/tel:city</remarks>
     public string City { get; private set; }
 
     /// <summary>
-    ///   Kantonskürzel (ZH,BE,AG,...)
+    ///   The abbreviation of the canton (ZH,BE,AG,TG,SG,...)
     /// </summary>
     /// <remarks>/feed/entry/tel:canton</remarks>
-    public string Canton { get; private set; }
+    public string CantonAbbreviation { get; private set; }
 
     /// <summary>
-    ///   * Wünscht keine Werbung
+    ///   Defines if the person/organization does not wish to receive advertisement
     /// </summary>
     /// <remarks>/feed/entry/tel:nopromo</remarks>
     public bool NoPromotion { get; private set; }
 
     /// <summary>
-    ///   Telefonnummer mit Ländervorwahl
+    ///   The phone number in international format
     /// </summary>
     /// <remarks>/feed/entry/tel:phone</remarks>
     public string Phone { get; private set; }
 
     /// <summary>
-    ///   Faxnummer (optional)
+    ///   The fax number
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='fax'</remarks>
     public string Fax { get; private set; }
 
     /// <summary>
-    ///   Handynummer (optional)
+    ///   The cell phone number
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='mobile'</remarks>
     public string Mobile { get; private set; }
 
     /// <summary>
-    ///   E-Mail-Adresse (optional)
+    ///   The email address
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='email'</remarks>
     public string EMail { get; private set; }
 
     /// <summary>
-    ///   Website URL (optional)
+    ///   The website URL
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='website'</remarks>
     public string Website { get; private set; }
 
     /// <summary>
-    ///   Skype-Name (optional)
+    ///   Skype name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='skype'</remarks>
     public string Skype { get; private set; }
 
     /// <summary>
-    ///   ICQ Instant-Messenger-Name (optional)
+    ///   ICQ Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='icq'</remarks>
     public string Icq { get; private set; }
 
     /// <summary>
-    ///   MSN Instant-Messenger-Name (optional)
+    ///   MSN Instant-Messenger-Name
     /// </summary>
-    /// <remarks>/feed/entry/tel:extra/@tpye='msn'</remarks>
+    /// <remarks>/feed/entry/tel:extra/@type='msn'</remarks>
     public string Msn { get; private set; }
 
     /// <summary>
-    ///   AIM Instant-Messenger-Name (optional)
+    ///   AIM Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='aim'</remarks>
     public string Aim { get; private set; }
 
     /// <summary>
-    ///   Yahoo Instant-Messenger-Name (optional)
+    ///   Yahoo Instant-Messenger-Name
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='yahoo'</remarks>
     public string Yahoo { get; private set; }
 
     /// <summary>
-    ///   Alle Extra Felder die nicht speziell behandelt werden.
+    ///   All additional extra fields that are not listed in their own properties
     /// </summary>
     /// <remarks>/feed/entry/tel:extra/@type='...'</remarks>
-    public IReadOnlyDictionary<string, string> ExtraFields { get; private set; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> ExtraFields { get; } = new Dictionary<string, string>();
 
     public static TelSearchEntry CreateFromElement(XElement entry)
     {
@@ -309,10 +309,10 @@
             result.Occupation = elem.Value;
             break;
           case "category":
-            ((List<string>)result.Category).Add(elem.Value);
+            ((List<string>) result.Categories).Add(elem.Value);
             break;
           case "street":
-            result.Street = elem.Value;
+            result.StreetName = elem.Value;
             break;
           case "streetno":
             result.StreetNumber = elem.Value;
@@ -327,7 +327,7 @@
             result.City = elem.Value;
             break;
           case "canton":
-            result.Canton = elem.Value;
+            result.CantonAbbreviation = elem.Value;
             break;
           case "nopromo":
             result.NoPromotion = elem.Value == "*";
@@ -370,7 +370,7 @@
                 result.Yahoo = extValue;
                 break;
               default:
-                ((Dictionary<string, string>)result.ExtraFields)[extType] = extValue;
+                ((Dictionary<string, string>) result.ExtraFields)[extType] = extValue;
                 break;
             }
 
