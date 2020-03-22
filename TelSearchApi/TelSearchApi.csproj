@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageId>ch.gargo.TelSearchApi</PackageId>
+    <PackageId>TelSearchApi</PackageId>
     <Authors>Patrick Sollberger</Authors>
     <Company>Patrick Sollberger</Company>
-    <Description>A tel.search.ch api client library</Description>
+    <Description>A tel.search.ch api C# client library</Description>
     <Copyright />
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/psollberger/TelSearchApi</RepositoryUrl>

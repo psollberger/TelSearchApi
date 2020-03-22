@@ -10,9 +10,6 @@ jobs:
   build:
     runs-on: windows-latest
 
-    env:
-      NUGET_KEY: ${{secrets.NUGET_KEY}}
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
@@ -28,7 +25,8 @@ jobs:
     - name: Run Tests
       run: dotnet test
 
+    - name: Create nuget package
+      run: dotnet pack --configuration Release
+
     - name: Publish nuget package
-      uses: rohith/publish-nuget@v2.2.0
-      with:
-        PROJECT_FILE_PATH: TelSearchApi\TelSearchApi.csproj
+      run: dotnet nuget push .\TelSearchApi\bin\Release\TelSearchApi.3.0.0.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json
