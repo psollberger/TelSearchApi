@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace TelSearchApi
+﻿namespace TelSearchApi
 {
+  using System.Threading.Tasks;
+
   public interface ITelSearchClient
   {
     string ApiKey { get; }
