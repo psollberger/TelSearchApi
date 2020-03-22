@@ -10,11 +10,14 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      NUGET_KEY: ${{secrets.NUGET_KEY}}
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
       
-    - name: Setup .NET Core SDK
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.4.0
       with:
         dotnet-version: 3.1.101
@@ -24,3 +27,8 @@ jobs:
 
     - name: Run Tests
       run: dotnet test
+
+    - name: Publish nuget packages
+      uses: rohith/publish-nuget@v2.2.0
+      with:
+        PROJECT_FILE_PATH: TelSearchApi\TelSearchApi.csproj
